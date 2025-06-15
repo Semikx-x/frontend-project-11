@@ -25,5 +25,8 @@
     "eslint-plugin-import": "^2.31.0",
     "globals": "^16.2.0",
     "sonar-scanner": "^3.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.6"
   }
 }
