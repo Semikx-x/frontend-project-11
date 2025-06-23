@@ -1,0 +1,27 @@
+export default (data) => {
+  const parser = new DOMParser()
+  let i = 1
+  const doc = parser.parseFromString(data, 'application/xml')
+  const docTitle = doc.querySelector('title')
+  const description = doc.querySelector('description')
+  const descText = description.textContent
+  const feed = docTitle.textContent
+  const news = {
+    feed: feed,
+    description: descText,
+    posts: [],
+  }
+  const items = doc.querySelectorAll('item')
+  for (const item of items) {
+    const title = item.querySelector('title')
+    const link = item.querySelector('link')
+    const post = {
+      id: i,
+      title: title.textContent,
+      link: link.textContent,
+    }
+    news.posts.push(post)
+    i += 1
+  }
+  return news
+}

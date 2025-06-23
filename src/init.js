@@ -2,6 +2,10 @@ import getUrlSchema from './validate'
 import i18next from 'i18next'
 import ru from './locales/ru'
 import onChange from 'on-change'
+import axios from 'axios'
+import parser from './parser.js'
+import renderlist from './renderlist.js'
+import renderPosts from './render_posts.js'
 
 export default async () => {
   const i18nextInstance = i18next.createInstance()
@@ -50,6 +54,10 @@ export default async () => {
       await schema.validate(value)
       entrdUrls.push(value)
       wathedObject.error = null
+      const response = await axios.get('https://allorigins.hexlet.app/get?url=' + value)
+      const doc = parser(response.data.contents)
+      renderlist(doc)
+      renderPosts(doc)
     }
     catch (err) {
       wathedObject.error = err.message
