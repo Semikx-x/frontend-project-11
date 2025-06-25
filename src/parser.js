@@ -15,10 +15,12 @@ export default (data) => {
   for (const item of items) {
     const title = item.querySelector('title')
     const link = item.querySelector('link')
+    const description = item.querySelector('description')
     const post = {
       id: i,
       title: title.textContent,
       link: link.textContent,
+      description: description.textContent,
     }
     news.posts.push(post)
     i += 1

@@ -6,12 +6,13 @@ import axios from 'axios'
 import parser from './parser.js'
 import renderlist from './renderlist.js'
 import renderPosts from './render_posts.js'
+import runJob from './job.js'
 
 export default async () => {
   const i18nextInstance = i18next.createInstance()
   const form = document.querySelector('form')
   const input = document.querySelector('input')
-  const sudbtn = document.querySelector('button')
+  const sudbtn = document.querySelector('#dobavlenie')
   const label = document.querySelector('label')
   const p = document.querySelector('P')
   const entrdUrls = []
@@ -23,6 +24,7 @@ export default async () => {
 
   const state = {
     formData: '',
+    actualLinks: new Set(),
     error: null,
   }
 
@@ -56,11 +58,15 @@ export default async () => {
       wathedObject.error = null
       const response = await axios.get('https://allorigins.hexlet.app/get?url=' + value)
       const doc = parser(response.data.contents)
+
       renderlist(doc)
-      renderPosts(doc)
+      renderPosts(doc.posts, state.actualLinks)
+      doc.posts.forEach(post => state.actualLinks.add(post.link))
     }
     catch (err) {
       wathedObject.error = err.message
     }
   })
+
+  runJob(entrdUrls, state)
 }
