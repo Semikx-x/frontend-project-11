@@ -1,6 +1,6 @@
 import modal from './modal.js'
 
-export default (receivePosts, actualLinks) => {
+export default (receivePosts, actualLinks, i18n) => {
   const ul = document.querySelector('#postUl')
   for (const receivePost of receivePosts) {
     if (actualLinks.has(receivePost.link)) {
@@ -11,7 +11,7 @@ export default (receivePosts, actualLinks) => {
     const btn = document.createElement('button')
     btn.classList.add('btn', 'btn-outline-primary', 'btn-sm')
     btn.id = receivePost.id
-    btn.textContent = 'Просмотр'
+    btn.textContent = i18n.t('view')
     btn.dataset.toggle = 'modal'
     btn.dataset.target = '#modal'
     const a = document.createElement('a')

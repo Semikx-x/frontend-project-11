@@ -1,8 +1,12 @@
 export default {
   translation: {
+    success: 'RSS успешно загружен',
     button: 'Добавить',
     holder: 'Ссылка RSS',
-    invalid: 'Некоректный URL',
-    dubl: 'Этот URL уже добавлен',
+    empty: 'Не должно быть пустым',
+    invalid: 'Ссылка должна быть валидным URL',
+    networkErr: 'Ошибка сети',
+    dubl: 'RSS уже существует',
+    view: 'Просмотр',
   },
 }

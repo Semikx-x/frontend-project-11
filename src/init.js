@@ -7,6 +7,7 @@ import parser from './parser.js'
 import renderlist from './renderlist.js'
 import renderPosts from './render_posts.js'
 import runJob from './job.js'
+import zapros from './zapros.js'
 
 export default async () => {
   const i18nextInstance = i18next.createInstance()
@@ -14,7 +15,7 @@ export default async () => {
   const input = document.querySelector('input')
   const sudbtn = document.querySelector('#dobavlenie')
   const label = document.querySelector('label')
-  const p = document.querySelector('P')
+  const p = document.querySelector('p')
   const entrdUrls = []
 
   await i18nextInstance.init({
@@ -33,7 +34,6 @@ export default async () => {
       input.classList.remove('is-invalid')
       input.value = ''
       input.focus()
-      p.textContent = ''
     }
     else {
       input.classList.add('is-invalid')
@@ -56,17 +56,25 @@ export default async () => {
       await schema.validate(value)
       entrdUrls.push(value)
       wathedObject.error = null
-      const response = await axios.get('https://allorigins.hexlet.app/get?url=' + value)
+      const response = await zapros(value, i18nextInstance)
       const doc = parser(response.data.contents)
+      p.classList.replace('text-danger', 'text-success')
+      p.textContent = i18nextInstance.t('success')
 
       renderlist(doc)
-      renderPosts(doc.posts, state.actualLinks)
+      renderPosts(doc.posts, state.actualLinks, i18nextInstance)
       doc.posts.forEach(post => state.actualLinks.add(post.link))
     }
     catch (err) {
-      wathedObject.error = err.message
+      console.log(err)
+      if (err.code === 'ECONNABORTED') {
+        wathedObject.error = 'networkErr'
+      }
+      else {
+        wathedObject.error = err.message
+      }
     }
   })
 
-  runJob(entrdUrls, state)
+  runJob(entrdUrls, state, i18nextInstance)
 }

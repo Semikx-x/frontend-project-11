@@ -1,12 +1,12 @@
-import axios from 'axios'
 import parser from './parser.js'
 import renderPosts from './render_posts.js'
+import zapros from './zapros.js'
 
-async function update(links, state) {
+async function update(links, state, i18n) {
   for (const link of links) {
-    const response = await axios.get('https://allorigins.hexlet.app/get?url=' + link)
+    const response = await zapros(link)
     const contents = parser(response.data.contents)
-    renderPosts(contents.posts, state.actualLinks)
+    renderPosts(contents.posts, state.actualLinks, i18n)
     contents.posts.forEach(post => state.actualLinks.add(post.link))
   }
 }
