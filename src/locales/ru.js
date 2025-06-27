@@ -8,5 +8,6 @@ export default {
     networkErr: 'Ошибка сети',
     dubl: 'RSS уже существует',
     view: 'Просмотр',
+    RssNull: 'Ресурс не содержит валидный RSS',
   },
 }

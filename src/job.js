@@ -1,21 +1,16 @@
-import parser from './parser.js'
-import renderPosts from './render_posts.js'
-import zapros from './zapros.js'
+import loader from './loader.js'
 
-async function update(links, state, i18n) {
+async function update(links, state, i18n, wathedObject, p) {
   for (const link of links) {
-    const response = await zapros(link)
-    const contents = parser(response.data.contents)
-    renderPosts(contents.posts, state.actualLinks, i18n)
-    contents.posts.forEach(post => state.actualLinks.add(post.link))
+    loader(link, i18n, state, wathedObject, p)
   }
 }
 
-const timer = async () => new Promise(res => setTimeout(res, 5001))
+const timer = async () => new Promise(res => setTimeout(res, 5000))
 
-export default async (links, state) => {
+export default async (links, state, i18n, wathedObject, p) => {
   while (true) {
     await timer()
-    update(links, state)
+    update(links, state, i18n, wathedObject, p)
   }
 }

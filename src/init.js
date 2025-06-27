@@ -1,13 +1,9 @@
 import getUrlSchema from './validate'
 import i18next from 'i18next'
 import ru from './locales/ru'
-import onChange from 'on-change'
-import axios from 'axios'
-import parser from './parser.js'
-import renderlist from './renderlist.js'
-import renderPosts from './render_posts.js'
 import runJob from './job.js'
-import zapros from './zapros.js'
+import loader from './loader.js'
+import watcher from '../wiews/watcher.js'
 
 export default async () => {
   const i18nextInstance = i18next.createInstance()
@@ -29,17 +25,7 @@ export default async () => {
     error: null,
   }
 
-  const wathedObject = onChange(state, function (path, value, previousValue) {
-    if (state.error == null) {
-      input.classList.remove('is-invalid')
-      input.value = ''
-      input.focus()
-    }
-    else {
-      input.classList.add('is-invalid')
-      p.textContent = i18nextInstance.t(state.error)
-    }
-  })
+  const wathedObject = watcher(state, input, p, i18nextInstance)
 
   sudbtn.textContent = i18nextInstance.t('button')
   label.textContent = i18nextInstance.t('holder')
@@ -50,31 +36,25 @@ export default async () => {
   sudbtn.addEventListener('click', async (e) => {
     e.preventDefault()
     const value = state.formData
-    const schema = getUrlSchema(entrdUrls)
-
-    try {
-      await schema.validate(value)
-      entrdUrls.push(value)
-      wathedObject.error = null
-      const response = await zapros(value, i18nextInstance)
-      const doc = parser(response.data.contents)
-      p.classList.replace('text-danger', 'text-success')
-      p.textContent = i18nextInstance.t('success')
-
-      renderlist(doc)
-      renderPosts(doc.posts, state.actualLinks, i18nextInstance)
-      doc.posts.forEach(post => state.actualLinks.add(post.link))
+    const validationResult = await validate(value, entrdUrls)
+    if (validationResult != undefined) {
+      wathedObject.error = validationResult
+      return
     }
-    catch (err) {
-      console.log(err)
-      if (err.code === 'ECONNABORTED') {
-        wathedObject.error = 'networkErr'
-      }
-      else {
-        wathedObject.error = err.message
-      }
-    }
+    loader(value, i18nextInstance, state, wathedObject, p)
   })
 
-  runJob(entrdUrls, state, i18nextInstance)
+  runJob(entrdUrls, state, i18nextInstance, wathedObject, p)
+}
+
+async function validate(value, entrdUrls) {
+  const schema = getUrlSchema(entrdUrls)
+  try {
+    await schema.validate(value)
+    entrdUrls.push(value)
+    return undefined
+  }
+  catch (error) {
+    return error.message
+  }
 }

@@ -1,6 +1,9 @@
 export default (obj) => {
   const container1 = document.querySelector('#posts')
   const container2 = document.querySelector('#feeds')
+  if (container2.hasChildNodes()) {
+    return
+  }
   const ulPosts = document.createElement('ul')
   const ulFeeds = document.createElement('ul')
   ulFeeds.classList.add('list-group', 'border-0', 'rounded-0')
