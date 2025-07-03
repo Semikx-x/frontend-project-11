@@ -6,7 +6,7 @@ export default (btn, receivePost) => {
 
   const h5 = modalEl.querySelector('h5')
   const modalBody = modalEl.querySelector('.modal-body')
-  const a = modalEl.querySelector('a')
+  const a = modalEl.querySelector('#a')
   const modalFooter = modalEl.querySelector('.modal-footer')
   const closeBtn = modalFooter.querySelector('button')
 
