@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "./src/index.html",
+  "main": "index.html",
   "scripts": {
     "build": "npx vite",
     "test": "echo \"Error: no test specified\" && exit 1"
