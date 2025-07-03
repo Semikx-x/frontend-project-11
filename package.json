@@ -15,7 +15,7 @@
   "type": "module",
   "main": "index.html",
   "scripts": {
-    "vite build": "npx vite",
+    "vite-build": "npx vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
