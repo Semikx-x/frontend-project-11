@@ -11,7 +11,7 @@ export default async (url, i18n) => {
   }
   // eslint-disable-next-line no-unused-vars
   catch (_) {
-    throw new Error(i18n.t('RssNull'))
+    throw new Error(i18n.t('networkErr'))
   }
 
   throw new Error(i18n.t('networkErr'))
