@@ -41,6 +41,7 @@ export default async () => {
       wathedObject.error = validationResult
       return
     }
+    input.value = ''
     loader(value, i18nextInstance, state, wathedObject, p)
   })
 
