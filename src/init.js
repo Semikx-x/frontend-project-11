@@ -3,7 +3,7 @@ import i18next from 'i18next'
 import ru from './locales/ru'
 import runJob from './job.js'
 import loader from './loader.js'
-import watcher from './src/wiews/watcher.js'
+import watcher from './wiews/watcher.js'
 
 export default async () => {
   const i18nextInstance = i18next.createInstance()
